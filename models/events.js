@@ -3,6 +3,31 @@ const { fetchMarket, getMarket } = require("./markets");
 
 var events = {};
 
+const checkOne = (pk) => {
+    if(events[pk].eventStart * 1000 + 48 * 60 * 60 * 1000 < new Date().getTime() ){
+        delete events[pk];
+        return;
+    }
+
+    let totalLiquidity = 0, totalMatched = 0;
+    events[pk].marketsWithMP = [];
+    for(let i=0;i<events[pk].markets.length;i++){
+        const market = getMarket(events[pk].markets[i].marketAccount);
+        totalLiquidity += market.totalLiquidity;
+        totalMatched += market.totalMatched;
+        events[pk].marketsWithMP.push({
+            ...market,
+            displayPriority: events[pk].markets[i].displayPriority,
+        });
+    }
+
+    events[pk].totalLiquidity = totalLiquidity;
+    events[pk].totalMatched = totalMatched;
+    events[pk].marketsWithMP.sort((a, b) => {
+        return a.displayPriority > b.displayPriority ? 1 : -1;
+    })
+}
+
 module.exports = {
     fetchEvent: ( ev ) => {
         let markets = [];
@@ -53,28 +78,9 @@ module.exports = {
     checkEvents: () => {
         console.log("Event Data Fetching...!");
         Object.keys(events).forEach(async pk => {
-            if(events[pk].eventStart * 1000 + 48 * 60 * 60 * 1000 < new Date().getTime() ){
-                delete events[pk];
-                return;
-            }
-
-            let totalLiquidity = 0, totalMatched = 0;
-            events[pk].marketsWithMP = [];
-            for(let i=0;i<events[pk].markets.length;i++){
-                const market = getMarket(events[pk].markets[i].marketAccount);
-                totalLiquidity += market.totalLiquidity;
-                totalMatched += market.totalMatched;
-                events[pk].marketsWithMP.push({
-                    ...market,
-                    displayPriority: events[pk].markets[i].displayPriority,
-                });
-            }
-
-            events[pk].totalLiquidity = totalLiquidity;
-            events[pk].totalMatched = totalMatched;
-            events[pk].marketsWithMP.sort((a, b) => {
-                return a.displayPriority > b.displayPriority ? 1 : -1;
-            })
+           checkOne(pk);
         });
-    }
+    },
+
+    checkOneEvent: checkOne,
 }

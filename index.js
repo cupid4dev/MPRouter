@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const { checkMarkets } = require('./models/markets');
+const bodyParser = require('body-parser');
 
 const port = process.env.PORT || 5000;
 
