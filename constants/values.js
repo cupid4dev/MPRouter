@@ -3,7 +3,7 @@ module.exports = {
         BET_DEX_EVENTS: "https://prod.events.api.betdex.com/events",
     }, 
     MP_CONSTS: {
-        DEFAULT_RPC: "https://mainnet.helius-rpc.com/?api-key=584e55c2-ed50-4325-81b0-389f77eac5e0",
+        DEFAULT_RPC: "https://mainnet.helius-rpc.com/?api-key=74ac7925-0644-4409-a846-9343bfb7dac3",
         DEFAULT_PROGRAM_ADDRESS: "monacoUXKtUi6vKsQwaLyxmXKSievfNWEcYXTgkbCih",
         DEFAULT_PRODUCT_PROGRAM_ADDRESS: "mppFrYmM6A4Ud3AxRbGXsGisX1HUsbDfp1nrg9FQJEE",
         DEFAULT_LIQUIDITY_DEXIMAL: 1000000,
